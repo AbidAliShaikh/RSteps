@@ -28,7 +28,7 @@ s2 <- states
 lm1 <- lm(Murder ~ . , data=states)
 summary(lm1)
 cor(states[,-1])
-lm1 <- lm(Murder~. + Income:frost, data=states)
+lm1 <- lm(Murder~. + Income:Frost, data=states)
 summary(lm1)
 plot(lm1)
 outlierTest(lm1) # Bonferroni outlier test
@@ -38,7 +38,8 @@ states <- states[!(row.names(states) %in% c('Nevada','Alaska')),]
 lm1 <- lm(Murder~. , data=states)
 summary(lm1)
 plot(lm1)
-library(car)
+library(car); 
+scatterplotMatrix(states)
 qqPlot(lm1,simulate = T) #when simulate=T , 95% confidence envelope is produced using parametric bootstrap
 avPlots(lm1)
 influencePlot(lm1)
