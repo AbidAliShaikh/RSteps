@@ -3,7 +3,7 @@ lm1 <- lm(weight~height)
 fitted(lm1)
 weight
 residuals(lm1)
-a=fitted(lm1)-residuals(lm1)
+a=fitted(lm1)+residuals(lm1)
 plot(  height,weight)
 abline(lm1); summary(lm1)
 #The Residual Standard error 1.525 lbs can be thought of as average error in predicting weight from height
@@ -27,7 +27,11 @@ states = as.data.frame(state.x77[,c('Murder','Population','Illiteracy','Income',
 s2 <- states
 lm1 <- lm(Murder ~ . , data=states)
 summary(lm1)
-cor(states[,-1])
+###-----------
+library(ggcorrplot)
+ggcor <- cor(states[,-1])
+ggcorrplot(ggcor, hc.order = TRUE, type = "lower", lab = TRUE, lab_size = 3, method="circle",colors = c("tomato2", "white", "springgreen3"), title="Correlogram of Illitercy in US", ggtheme=theme_bw)
+###-----------
 lm1 <- lm(Murder~. + Income:Frost, data=states)
 summary(lm1)
 plot(lm1)
@@ -46,17 +50,17 @@ influencePlot(lm1)
 scatterplot(Murder ~ Illiteracy  ,data=states,spread=F, lty.smooth=2,pch=19)
 ##INDEPENDENCE OF ERRORS (AUTOCORRELATED) -use durbin watson test
 durbinWatsonTest(lm1)
-# the non-sig value 0.266 suggests a lack of autocorrelation, and conversely independence of errors
+# the non-sig value 0.24 suggests a lack of autocorrelation, and conversely independence of errors
 # so the model is good. This test is best for time interval data since closer in time data correlates
 lm2 <- lm (Murder ~ . , data=states)
 crPlots(lm2) # the model is linear; non-linearity in any one plot suggests including log or polynomial components
 ncvTest(lm1)
-# the non-sig p = 0.39 suggests that you have met the constant variance assumption
+# the non-sig p = 0.42 suggests that you have met the constant variance assumption
 # the above tests  homoscedasticity ; hence heteroscedasticity assumption is satisfied
 spreadLevelPlot(lm1)
 # the random points around the horizontal line of best fit suggest constant error variance
 # if you'd voileted the assumption, you'd expect non-horizontal line
-# the power transformation 1.2 stabilizes the non-constant error variance
+# the power transformation 1.33 stabilizes the non-constant error variance
 # if you'd got .5 instead of 1.2, then using sqrt(Y) instead of Y might lead to model that satisfied homoscedasticity
 
 # GOLBAL VALIDATION OF LINEAR MODEL ASSUMPTION 
